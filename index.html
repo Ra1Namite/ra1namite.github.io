@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lan='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <style>
+        .main{
+            text-align: center;
+        }
+     
+    </style>
+    <link rel='stylesheet' href='style.css' type='text/css'>
+</head>
+
+<body>
+
+    <div id='loading'>
+        loading...
+    </div>
+
+    <div class='main' id='mainContainer' hidden>
+        <img height='300' width='300' id='profileImage'>
+        <h1 id='fullName'></h1>
+        <p id='bio'> </p>
+        <h2 id='followersInformation'><h2>
+        <p class='link'>
+            Check me on <a id='githubLink' target="_blank">Github</a>
+        </p>
+        <dl id = "repos"><h1 style='color:white; font-size:36px; '>REPOSITORIES</h1></dl>
+
+        
+        
+    </div>
+    <div id='pic'>
+        <h2>Follow me on Twitter</h2>
+        <a class="twitter-timeline" data-width="600" data-height="500" data-theme="dark" href="https://twitter.com/Ra1Namite?ref_src=twsrc%5Etfw">Tweets by Ra1Namite</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div>   
+    <script>
+        fetch('https://api.github.com/users/Ra1Namite')
+        .then(response => response.json())
+        .then(function(data) {
+            console.log(data)
+
+            let followersCount = data['followers']
+            let followersInfo = `I have been followed by ${followersCount} awesome People on Github`
+            
+            document.getElementById('profileImage').src = data['avatar_url']
+            document.getElementById('fullName').textContent = data['name']
+            document.getElementById('bio').textContent = data['bio']
+            document.getElementById('followersInformation').textContent = followersInfo
+            document.getElementById('githubLink').href = data['html_url']
+            document.getElementById('mainContainer').hidden = false
+            document.getElementById('loading').hidden = true
+
+        }) 
+        var parentDiv = document.getElementById("repos");
+
+fetch("https://api.github.com/users/Ra1Namite/repos")
+.then(response => response.json())
+.then(data=>{
+    data.forEach(element=> {
+    parentDiv.innerHTML+=
+    `<dt>${element.name}</dt>`;
+parentDiv.innerHTML+=
+`<dt><a href=${element.html_url} target='_blank'>${element.full_name}</a></dt>`
+});
+});
+    </script> 
+</body>
+
+</html>
